@@ -83,29 +83,43 @@ def main():
         if not (0 <= humidity <= 100):
             print("Oops, RH (%) must be between 0-100 only...")
             continue
-        # add 3 more weather phenomenon here, such as UV index, etc.
 
+        # Additional weather phenomena
+        uv_index = float(input(" Enter UV Index (0 to 11+): "))
+        wind_speed = float(input(" Enter Wind Speed (km/h): "))
+        precipitation = input(" Enter Precipitation (None/Light/Heavy): ").strip()
+
+        # Validate the precipitation input
+        if precipitation not in ["None", "Light", "Heavy"]:
+            print("Oops, invalid input for precipitation. Please use 'None', 'Light', or 'Heavy'.")
+            continue
+
+        # Save the data
         records[date] = {
             "temperature": temperature,
             "humidity": humidity,
-            # add the key-value pairs here...
+            "uv_index": uv_index,
+            "wind_speed": wind_speed,
+            "precipitation": precipitation
         }
-        
-    print("\nSaving to file...")
+
+        print("\nSaving to file...")
+    
+    # Sorting and saving the records
     records = dict(sorted(records.items()))
     write_to_file(filepath, records)
 
+    # Output the weather data
     print("\n[Weather Information]")
     for date, data in records.items():
         formatted_date = format_date(date)
         temperature = data["temperature"]
         humidity = data["humidity"]
-        # phenomenon3 = data["phenomenon3"]
-        # phenomenon4 = data["phenomenon4"]
-        # phenomenon5 = data["phenomenon5"]
+        uv_index = data["uv_index"]
+        wind_speed = data["wind_speed"]
+        precipitation = data["precipitation"]
 
-        print(f"{formatted_date}\t| {temperature:.1f}°C\t| {humidity:.1f}%")
-        # print(f" * {phenomenon3:,.1f} symbol | ...")
-        
+        print(f"{formatted_date}\t| {temperature:.1f}°C\t| {humidity:.1f}%\t| UV: {uv_index:.1f}\t| Wind Speed: {wind_speed:.1f} km/h\t| Precipitation: {precipitation}")
+
 if __name__ == "__main__":
     main()
